@@ -1,8 +1,36 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+#pip install --upgrade pip
+
+
+# In[ ]:
+
+
+#pip install metapy pytoml
+
+
+# In[1]:
+
+
+import metapy
+idx = metapy.index.make_inverted_index('config.toml')
+
+
+# In[2]:
+
+
 import math
 import sys
 import time
 import metapy
 import pytoml
+
+
+# In[3]:
 
 
 def load_ranker(cfg_file):
@@ -11,7 +39,11 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index.
     """
-    return metapy.index.OkapiBM25()
+    return metapy.index.OkapiBM25(k1=1.25,b=0.75,k3=500)
+
+
+# In[4]:
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -52,3 +84,16 @@ if __name__ == '__main__':
             
     print("NDCG@{}: {}".format(top_k, ndcg))
     print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
