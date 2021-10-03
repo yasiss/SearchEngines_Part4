@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import metapy
+idx = metapy.index.make_inverted_index('config.toml')
+
 import math
 import sys
 import time
@@ -14,7 +17,7 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index.
     """
-    return metapy.index.OkapiBM25(k1=1.21,b=0.75,k3=300)
+    return metapy.index.OkapiBM25(k1=1.23,b=0.75,k3=430)
 
 
 
