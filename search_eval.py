@@ -1,61 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
-
-pip install --upgrade pip
-
-
-# In[2]:
-
-
-pip install metapy pytoml
-
-
-# In[3]:
-
-
-import metapy
-idx = metapy.index.make_inverted_index('config.toml')
-metapy.log_to_stderr()
-
-
-# In[4]:
-
-
 import math
 import sys
 import time
 import metapy
 import pytoml
-
-
-# In[ ]:
-
-
-'''
-ana = metapy.analyzers.load('config.toml')
-doc = metapy.index.Document()
-doc.content("I said that I can't believe that it only costs $19.95!")
-print(ana.analyze(doc))
-'''
-
-
-# In[5]:
-
-
-# Examine number of documents
-idx.num_docs()
-# Number of unique terms in the dataset
-idx.unique_terms()
-# The average document length
-idx.avg_doc_length()
-# The total number of terms
-idx.total_corpus_terms()
-
-
-# In[6]:
 
 
 def load_ranker(cfg_file):
@@ -67,16 +17,14 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25(k1=1.25,b=0.75,k3=500)
 
 
-# In[8]:
-
 
 if __name__ == '__main__':
-    #if len(sys.argv) != 2:
-     #   print("Usage: {} config.toml".format(sys.argv[0]))
-     #   sys.exit(1)
+    if len(sys.argv) != 2:
+        print("Usage: {} config.toml".format(sys.argv[0]))
+        sys.exit(1)
 
-    #cfg = sys.argv[1]
-    cfg= 'config.toml'
+    cfg = sys.argv[1]
+
     print('Building or loading index...')
     idx = metapy.index.make_inverted_index(cfg)
     ranker = load_ranker(cfg)
