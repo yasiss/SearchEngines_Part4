@@ -13,14 +13,20 @@
 #pip install metapy pytoml
 
 
-# In[1]:
+# In[5]:
 
 
 import metapy
 idx = metapy.index.make_inverted_index('config.toml')
 
 
-# In[2]:
+# In[13]:
+
+
+metapy.log_to_stderr()
+
+
+# In[14]:
 
 
 import math
@@ -30,7 +36,52 @@ import metapy
 import pytoml
 
 
-# In[3]:
+# In[15]:
+
+
+ana = metapy.analyzers.load('config.toml')
+doc = metapy.index.Document()
+doc.content("I said that I can't believe that it only costs $19.95!")
+print(ana.analyze(doc))
+
+
+# In[10]:
+
+
+# Examine number of documents
+idx.num_docs()
+# Number of unique terms in the dataset
+idx.unique_terms()
+# The average document length
+idx.avg_doc_length()
+# The total number of terms
+idx.total_corpus_terms()
+
+
+# In[18]:
+
+
+class InL2Ranker(metapy.index.RankingFunction):
+    """
+    Create a new ranking function in Python that can be used in MeTA.
+    """
+    def __init__(self, some_param=1.0):
+        self.param = some_param
+        # You *must* call the base class constructor here!
+        super(InL2Ranker, self).__init__()
+
+    def score_one(self, sd):
+        """
+        You need to override this function to return a score for a single term.
+        For fields available in the score_data sd object,
+        @see https://meta-toolkit.org/doxygen/structmeta_1_1index_1_1score__data.html
+        """
+        tfn = sd.doc_term_count * math.log((1+(sd.avg_dl/sd.doc_size)),2)
+        # return (self.param + sd.doc_term_count) / (self.param * sd.doc_unique_terms + sd.doc_size)
+        return sd.query_term_weight * (tfn / (tfn + self.param)) * math.log(((sd.num_docs + 1) / (sd.corpus_term_count + 0.5)),2)
+
+
+# In[19]:
 
 
 def load_ranker(cfg_file):
@@ -42,7 +93,7 @@ def load_ranker(cfg_file):
     return metapy.index.OkapiBM25(k1=1.25,b=0.75,k3=500)
 
 
-# In[4]:
+# In[20]:
 
 
 if __name__ == '__main__':
