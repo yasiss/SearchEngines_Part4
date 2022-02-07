@@ -1,7 +1,6 @@
 # Search Engines
 
-CS410 MP2.4 UIUC - Text Transformation Systems
-In this 4-part MP, you will get familiar with building and evaluating Search Engines.
+CS410 MP2.4 UIUC - Text Transformation Systems.
 
 Create a Search Engine using MeTA, The ranker will be evaluated using NDCG scores on 3 relevance datasets: Cranfield dataset, APNews dataset, and the Faculty dataset collected and annotated. 
 
